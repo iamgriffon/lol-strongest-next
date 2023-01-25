@@ -14,6 +14,15 @@ export const appRouter = router({
         greeting: `hello ${input?.text ?? "world"}`,
       };
     }),
+  voteForChampion: procedure
+  .input(
+    z.object({
+      voteInFavor: z.string(),
+      voteAgainst: z.string()
+    }))
+  .query(({input}) => {
+    return input
+  })
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
