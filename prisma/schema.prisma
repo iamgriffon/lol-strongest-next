@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Vote {
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  votedFor     Int
+  votedAgainst Int
+}
+
+model Champion {
+  id    String @id @default(uuid())
+  index String
+  name  String
+  title String
+  icon  String
+}
