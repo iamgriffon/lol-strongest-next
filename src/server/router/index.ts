@@ -14,6 +14,7 @@ export const appRouter = router({
     .query(({ input }) => {
       return input
     }),
+
   getChampions: procedure
     .query(() => {
       let randomChampionIndex = getRandomNumber();
@@ -43,8 +44,7 @@ export const appRouter = router({
       z.object({
         votedFor: z.number(),
         votedAgainst: z.number()
-      })
-    )
+      }))
     .mutation(async ({ input }) => {
       const voteInDb = await prisma.vote.create({
         data: {
