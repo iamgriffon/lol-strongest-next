@@ -33,17 +33,19 @@ export default function Home() {
     <div className="h-screen w-screen flex flex-col justify-center items-center">
       <div className="text-2xl text-center ">Which Champion is Stronger?</div>
       <div className="p-2" />
-      <div className="border-rounded border-zinc-600 border-2 p-8 flex flex-row justify-between max-w-2xl gap-6">
-          <ChampionListing 
-            data={champions?.first}
-            vote={voteForStrongest}
-          />
-        <span>Vs.</span>
+      { isFetched ? (
+        <div className="border-rounded border-zinc-600 border-2 p-8 flex flex-row justify-between max-w-2xl gap-6">
         <ChampionListing 
-            data={champions?.second}
-            vote={voteForStrongest}
-          />
-      </div>
+          data={champions?.first}
+          vote={voteForStrongest}
+        />
+      <span>Vs.</span>
+      <ChampionListing 
+          data={champions?.second}
+          vote={voteForStrongest}
+        />
+    </div>
+      ) : <>Loading</>}
     </div>
   );
 }
