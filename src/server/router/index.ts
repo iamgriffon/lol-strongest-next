@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { getChampionInfo } from '../getChampions';
-
-
+import champions from "../champions.json";
 import { procedure, router } from '../trpc';
+import { getRandomNumber } from '../utils/getRandomChampion';
+import { prisma } from '../utils/prisma';
 
 export const appRouter = router({
   voteForChampion: procedure
@@ -15,24 +15,46 @@ export const appRouter = router({
       return input
     }),
   getChampions: procedure
-    // .output(
-    //   z.object({
-    //     first: z.object({
-    //       index: z.number(),
-    //       name: z.string(),
-    //       title: z.string(),
-    //       icon: z.string()
-    //     }),
-    //     second: z.object({
-    //       index: z.number(),
-    //       name: z.string(),
-    //       title: z.string(),
-    //       icon: z.string()
-    //     })
-    //   })
-    // )
     .query(() => {
-      return { msg: 'hello world' }
+      let randomChampionIndex = getRandomNumber();
+      while (randomChampionIndex.first === randomChampionIndex.second) randomChampionIndex = getRandomNumber()
+      randomChampionIndex;
+
+      const indexedChampionList = champions.map((champion, index) => {
+        const { name, icon, title } = champion;
+        return {
+          index: index,
+          name,
+          icon,
+          title
+        }
+      })
+
+      const first = indexedChampionList.find(champion => champion?.index === randomChampionIndex.first);
+      const second = indexedChampionList.find(champion => champion?.index === randomChampionIndex.second);
+      return {
+        first,
+        second
+      }
+    }),
+
+  cast_vote: procedure
+    .input(
+      z.object({
+        votedFor: z.number(),
+        votedAgainst: z.number()
+      })
+    )
+    .mutation(async ({ input }) => {
+      const voteInDb = await prisma.vote.create({
+        data: {
+          ...input,
+        },
+    });
+      return {
+        success: true,
+        vote: voteInDb
+      }
     })
 });
 // export type definition of API

@@ -15,6 +15,8 @@ model Vote {
   createdAt    DateTime @default(now())
   votedFor     Int
   votedAgainst Int
+
+  @@map("votes")
 }
 
 model Champion {
@@ -23,4 +25,6 @@ model Champion {
   name  String
   title String
   icon  String
+
+  @@map("champions")
 }

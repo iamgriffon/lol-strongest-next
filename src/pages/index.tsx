@@ -1,26 +1,48 @@
-import { useEffect, useState } from 'react';
-import { ChampionsForVote, getChampionInfo } from '../server/getChampions';
+import { ChampionListing } from "@/components/ChampionListing";
+import { useEffect, useState } from "react";
+import { trpc } from "../utils/trpc";
 
+export type ChampionProps = {
+  first: {
+    index: Number
+    icon: string
+    name: string
+    title: string
+  } | undefined,
+  second: {
+    index: Number
+    icon: string
+    name: string
+    title: string
+  } | undefined
+}
 
-export default function Home(){
+export default function Home() {
 
-  const [championsForVote, setChampionsForVote] = useState(() => getChampionInfo())
-  const [champion] = championsForVote;
+  const { data, isFetched } = trpc.getChampions.useQuery();
+  const [champions, setChampions] = useState<ChampionProps>();
+  const voteForStrongest = (selected?: Number) => {
+    console.log(selected)
+  }
 
-  console.log(champion)
+  useEffect(() => {
+    if (isFetched) setChampions(data)
+  }, [isFetched])
 
-  return (    
+  return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
-      <div className="text-2xl text-center">Which Champion is Stronger?</div>
-      <div className="p-2"/>
-      <div className="border-rounded p-8 m-2 flex justify-between max-w-2xl flex-g">
-        <div className="mr-2 w-16 h-16 bg-red-800">
-         { champion?.first &&  <span>{champion?.first?.name}</span> }
-        </div>
+      <div className="text-2xl text-center ">Which Champion is Stronger?</div>
+      <div className="p-2" />
+      <div className="border-rounded border-zinc-600 border-2 p-8 flex flex-row justify-between max-w-2xl gap-6">
+          <ChampionListing 
+            data={champions?.first}
+            vote={voteForStrongest}
+          />
         <span>Vs.</span>
-        <div className="ml-2 w-16 h-16 bg-red-800">
-        { champion?.second &&  <span>{champion?.second?.name}</span> }
-        </div>
+        <ChampionListing 
+            data={champions?.second}
+            vote={voteForStrongest}
+          />
       </div>
     </div>
   );
