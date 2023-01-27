@@ -34,7 +34,7 @@ export default function Home() {
       <div className="text-2xl text-center ">Which Champion is Stronger?</div>
       <div className="p-2" />
       { isFetched ? (
-        <div className="border-rounded border-zinc-600 border-2 p-8 flex flex-row justify-between max-w-2xl gap-6">
+        <div className="border-rounded border-zinc-600 border-2 p-8 flex flex-row justify-center max-w-2xl gap-6">
         <ChampionListing 
           data={champions?.first}
           vote={voteForStrongest}
