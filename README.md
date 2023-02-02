@@ -1,34 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Strongest @https://lol-strongest-next-iamgriffon.vercel.app/
 
-## Getting Started
+This [Next.js](https://nextjs.org/) project has been bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-First, run the development server:
+**STRONGEST** is a fullstack web-app that consists of a voting game where two random champions will appear and the user has to vote which one is the strongest among them.
+
+### Technologies used:
+
+- **Next.js** (Front-end framework)
+- **TypeScript**  (Programming Language)
+- **Tailwind**  (Design System)
+- **tRPC** (Procedure caller for consuming APIs)
+- **Prisma** (ORM for Databases)
+- **Zod** (for Data Validation)
+- **Riot Games' Data Dragon** (API used as a source of data for populating our database with champions)
+
+### Deployment structure:
+
+- **Vercel** for our web app
+- **Aamazon AWS (RDS)** for the database
+- Database used: **POSTGRESQL**
+
+## How to set the dev environment into my machine?
+
+1. First, clone this project (and leave a STAR! =) ) and install the dependencies:
 
 ```bash
-npm run dev
+npm install
 # or
-yarn dev
+yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Then you should create a .env file containing the following
+
+    -  ```DATABASE_URL``` for your main PostgreSQL database
+    - ```SHADOW_DATABASE_URL``` for your shadow PostgreSQL database - *Mandatory for Prisma*.
+  
+
+3.  Once these are created and linked, run the following command to create the tables in your Database:
+    - ```npx prisma migrate dev```
+  
+4. Then, you run a script file that will serve as a "seed" - it will populate the database with our beloved League of Legends Champions by fetching Riot's Data Dragon API.
+    - The script file is located in ```./scripts/fill-db.ts```
+    - Execute the script by running the command ```npm run ts-node ./scripts/fill-db.ts```
+    - The script will DELETE all data and then will REFILL the database with the new info. it will also delete the votes, so I don't run that for prod.
+    - **THE LEADERBOARD AND THE VOTES WILL RESET EVERY TIME A CHAMPION IS RELEASED OR REWORKED!**
+
+5. Now you're good to go! run ```npm run dev``` and open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+6. Last but not least, some consideration regarding the project: 
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    - ```src/server/router/index.ts``` contains our tRPC routes with our API queries and procedures.
+    - ```src/server/utils/inferAsyncReturn``` contains a very useful method to infer AsyncReturn types from functions.
+    - This project is a work-in-progress, so constant updates will happen, always check the README.md for updated guides and changelogs.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Inspired on Theo @t3.gg, made with love.
