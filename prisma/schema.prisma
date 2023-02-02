@@ -6,25 +6,25 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Vote {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now())
-  votedFor     Int
-  votedAgainst Int
-
-  @@map("votes")
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  votedForId     Int      @unique
+  votedFor       Champion @relation(name: "votesFor", fields: [votedForId], references: [id])
+  votedAgainst   Champion @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
+  votedAgainstId Int      @unique
 }
 
 model Champion {
-  id    String @id @default(uuid())
-  index String
-  name  String
-  title String
-  icon  String
-
-  @@map("champions")
+  id          Int    @id
+  name        String
+  title       String
+  icon        String
+  VoteFor     Vote[] @relation("votesFor")
+  VoteAgainst Vote[] @relation("votesAgainst")
 }
