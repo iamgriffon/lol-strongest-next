@@ -14,14 +14,14 @@ datasource db {
 model Vote {
   id             String   @id @default(cuid())
   createdAt      DateTime @default(now())
-  votedForId     Int      @unique
+  votedForId     Int
   votedFor       Champion @relation(name: "votesFor", fields: [votedForId], references: [id])
+  votedAgainstId Int
   votedAgainst   Champion @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
-  votedAgainstId Int      @unique
 }
 
 model Champion {
-  id          Int    @id
+  id          Int    @id @unique
   name        String
   title       String
   icon        String

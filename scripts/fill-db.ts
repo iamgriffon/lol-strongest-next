@@ -20,13 +20,16 @@ export async function doBackfill() {
 
     console.log(CHAMPIONS_TO_DATABASE);
 
-    const deleteAll = await prisma.champion.deleteMany({});
+    const deleteVotes = await prisma.vote.deleteMany({});
+
+    const deleteChampions = await prisma.champion.deleteMany({});
 
     const creation = await prisma.champion.createMany({
       data: CHAMPIONS_TO_DATABASE
     });
 
-    console.log("Deleted?", deleteAll)
+    console.log("Deleted Champions?", deleteChampions)
+    console.log("Deleted?", deleteVotes);
     console.log("Created?", creation);
 };
 
