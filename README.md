@@ -17,7 +17,7 @@ This [Next.js](https://nextjs.org/) project has been bootstrapped with [`create-
 ### Deployment structure:
 
 - **Vercel** for our web app
-- **Aamazon AWS (RDS)** for the database
+- **Amazon AWS (RDS)** for the database
 - Database used: **POSTGRESQL**
 
 ## How to set the dev environment into my machine?
